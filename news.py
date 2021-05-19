@@ -1,7 +1,6 @@
 import requests
 from lxml import html,etree
-from flask import Flask
-from flask_restful import Resource,Api
+from flask_restful import Resource
 
 
 def fetch_news(domain_url):
@@ -40,6 +39,9 @@ def fetch_news(domain_url):
     return news_list
 
 
+
+
+
 class LatestNews(Resource):
     def get(self):
         news_list = fetch_news(domain_url = "https://www.ndtv.com/latest")
@@ -60,13 +62,12 @@ class ScienceNews(Resource):
         news_list = fetch_news(domain_url = "https://www.ndtv.com/science")
         return {"news_list" : news_list}
 
+class BusinessNews(Resource):
+    def get(self):
+        news_list = fetch_news(domain_url = "https://www.ndtv.com/business/latest")
+        return {"news_list" : news_list}
 
-app = Flask(__name__)
-api = Api(app)
-api.add_resource(LatestNews, "/latest-news")
-api.add_resource(WorldNews, "/world-news")
-api.add_resource(IndiaNews, "/india-news")
-api.add_resource(ScienceNews, "/science-news")
-
-if __name__ == '__main__':
-    app.run(debug=True)
+class EntertainmentNews(Resource):
+    def get(self):
+        news_list = fetch_news(domain_url = "https://www.ndtv.com/entertainment/latest")
+        return {"news_list" : news_list}

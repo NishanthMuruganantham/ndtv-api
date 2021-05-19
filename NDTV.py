@@ -72,17 +72,3 @@ class EntertainmentNews(Resource):
     def get(self):
         news_list = fetch_news(domain_url = "https://www.ndtv.com/entertainment/latest")
         return {"news_list" : news_list}
-
-
-
-app = Flask(__name__)
-api = Api(app)
-api.add_resource(LatestNews, "/latest-news")
-api.add_resource(WorldNews, "/world-news")
-api.add_resource(IndiaNews, "/india-news")
-api.add_resource(ScienceNews, "/science-news")
-api.add_resource(BusinessNews, "/business-news")
-api.add_resource(EntertainmentNews, "/entertainment-news")
-
-if __name__ == '__main__':
-    app.run(debug=True)
