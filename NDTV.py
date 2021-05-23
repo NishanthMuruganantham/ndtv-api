@@ -13,14 +13,12 @@ main_news_csv = r"main_news.csv"
 def fetch_main_news_data(category,news_page_url):
     
     news_df = pd.DataFrame(columns = ["category","headline","description","url","image_url"])
-    
-    #news_page_url = "https://www.ndtv.com/latest"
+
     last_page_xpath = "//div[contains(@class,'listng_pagntn clear')]/a[contains(@class,'btnLnk arrowBtn next')]/preceding-sibling::a[position()=1]"
     page = requests.get(news_page_url)
     tree = html.fromstring(page.content)
     total_pages = tree.xpath(last_page_xpath+"/text()")[0]
     
-    news_list = []
     headline_list = []
     description_list = []
     image_url_list = []
@@ -56,14 +54,15 @@ def fetch_main_news_data(category,news_page_url):
     
     return news_df
 
+
 main_categories = {
     "latest" : "https://www.ndtv.com/latest",
-    # "india" : "https://www.ndtv.com/india",
+    "india" : "https://www.ndtv.com/india",
     # "science" : "https://www.ndtv.com/science",
     # "business" : "https://www.ndtv.com/business/latest",
     # "entertainment" : "https://www.ndtv.com/entertainment/latest",
 }
-
+main_news_dataframe = pd.DataFrame(columns = ["category","headline","description","url","image_url"])
 
 def store_news_in_csv():
     threading.Timer(120.0, store_news_in_csv).start()
@@ -71,32 +70,51 @@ def store_news_in_csv():
     for category in main_categories:
         df = fetch_main_news_data(category = category, news_page_url = main_categories[category])
         L.append(df)
+    global main_news_dataframe
+    main_news_dataframe = pd.concat(L, ignore_index=True)
+    main_news_dataframe.to_csv(main_news_csv, sep = ',', index = False)
+
+
+
+def read_dataframe(requested_fields = ["category","headline","description","url","image_url"],
+                    requested_categories = ["latest","india"]):
+    #total_main_news_df = main_news_dataframe.copy()
+    total_main_news_df = pd.read_csv(main_news_csv)
+    main_news_df_with_requested_fields = total_main_news_df[requested_fields]
     
-    news_df = pd.concat(L, ignore_index=True)
-    print(news_df)
-    news_df.to_csv(main_news_csv, sep = ',', index = False)
+    output_category_list = []
+    for category in requested_categories:
+        category_wise_df = main_news_df_with_requested_fields[main_news_df_with_requested_fields["category"]==category]
+        category_wise_df = category_wise_df.replace({np.nan: None})
+        
+        news_list = []
+        for index, row in category_wise_df.iterrows():
+            response_dict = {i:row[i] for i in category_wise_df.columns}
+            news_list.append(response_dict)
+        
+        category_dictionary = {
+            "category" : category,
+            "total_results" : len(category_wise_df),
+            "news_list": news_list
+        }
+        
+        output_category_list.append(category_dictionary)
+    
+    return {"status":"successfully fetched",
+            "news":output_category_list}
 
-
-
-def read_excel(requested_fields = ["category","headline","description","url","image_url"]):
-    news = pd.read_csv(main_news_csv)
-    news = news[requested_fields]
-    news = news.replace({np.nan: None})
-    news_list = []
-    for index, row in news.iterrows():
-        response_dict = {i:row[i] for i in news.columns}
-        news_list.append(response_dict)
-    return {"news_list": news_list}
 
 #store_news_in_csv()
+
+#read_dataframe()
 
 class LatestNews(Resource):
     def get(self):
         user_requested_field = request.args.get("field")
         if user_requested_field is not None:
             fields_list = re.findall(r'([^(,)]+)(?!.*\()', user_requested_field)
-            news_list = read_excel(requested_fields = fields_list)
+            news_list = read_dataframe(requested_fields = fields_list)
         else:
-            news_list = read_excel()
+            news_list = read_dataframe()
         return news_list
-read_excel()
+
