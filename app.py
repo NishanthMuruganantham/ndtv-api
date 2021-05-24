@@ -6,7 +6,7 @@ cities = ["agra","ahmedabad","allahabad","amritsar","aurangabad","bangalore","bh
 
 app = Flask(__name__)
 api = Api(app)
-api.add_resource(LatestNews, "/")
+api.add_resource(LatestNews, "/category")
 
 if __name__ == '__main__':
     app.run(debug=True)

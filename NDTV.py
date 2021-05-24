@@ -34,17 +34,27 @@ def fetch_main_news_data(category, news_page_url):
         headline_elements = tree.xpath(news_header_xpath)
         
         for i in range(1, int(len(headline_elements)) + 1):
+            try:
+                news_headline = tree.xpath(f"({news_header_xpath})[{i}]/text()")[0]  # *headline
+            except IndexError:
+                news_headline = None
             
-            news_headline = tree.xpath(f"({news_header_xpath})[{i}]/text()")[0]  # *headline
-            news_url = headline_elements[i - 1].get("href")  # *url
+            try:
+                news_url = headline_elements[i - 1].get("href")  # *url
+            except:
+                news_url = None
             
-            description_xpath = (
-                f"({news_header_xpath})[{i}]/parent::h2/following-sibling::p/text()"
-            )
+            description_xpath = f"({news_header_xpath})[{i}]/parent::h2/following-sibling::p/text()"
+            try:
+                description = tree.xpath(description_xpath)[0]  # *description
+            except IndexError:
+                description = None
             
-            description = tree.xpath(description_xpath)[0]  # *description
             img_xpath = f"({news_header_xpath})[{i}]/parent::h2/parent::div/preceding-sibling::div/a/img"
-            img_url = tree.xpath(img_xpath)[0].get("src")  # *image_url
+            try:
+                img_url = tree.xpath(img_xpath)[0].get("src")  # *image_url
+            except IndexError:
+                img_url = None
             
             headline_list.append(news_headline)
             description_list.append(description)
@@ -55,7 +65,7 @@ def fetch_main_news_data(category, news_page_url):
     news_df["description"] = description_list
     news_df["url"] = url_list
     news_df["image_url"] = image_url_list
-    news_df = news_df.assign(category=category)
+    news_df = news_df.assign(category = category)
     
     return news_df
 
@@ -66,6 +76,7 @@ main_categories = {
     "science": "https://www.ndtv.com/science",
     "business": "https://www.ndtv.com/business/latest",
     "entertainment": "https://www.ndtv.com/entertainment/latest",
+    "offbeat" : "https://www.ndtv.com/offbeat",
 }
 
 
@@ -91,8 +102,8 @@ def read_dataframe(
     requested_fields = ["category", "headline", "description", "url", "image_url"],
     requested_categories = ["latest"],
 ):
-    # total_main_news_df = main_news_dataframe.copy()
-    total_main_news_df = pd.read_csv(main_news_csv)
+    total_main_news_df = main_news_dataframe.copy()
+    #total_main_news_df = pd.read_csv(main_news_csv)
     # main_news_df_with_requested_fields = total_main_news_df[requested_fields]
     
     output_category_list = []
@@ -124,7 +135,7 @@ def read_dataframe(
 
 store_news_in_csv()
 
-# read_dataframe()
+#read_dataframe()
 
 
 class LatestNews(Resource):
