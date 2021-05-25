@@ -8,7 +8,6 @@ import threading
 import numpy as np
 from sqlalchemy import create_engine
 
-main_news_csv = r"main_news.csv"
 
 engine = create_engine("postgresql://qmfoxldpeqyqxl:ef4a37793d151cb57a73570ec98f4f20c078de8df5fec98a2770401b20b7d578@ec2-34-202-54-225.compute-1.amazonaws.com:5432/d29c1ebursraf8", echo = False)
 
@@ -131,8 +130,8 @@ class CategoryNews():
             
             news_list = []
             for index, row in category_wise_df_with_requested_fields.iterrows():
-                response_dict = {"count": "d"}
-                response_dict.update(
+                #response_dict = {"count": "d"}
+                response_dict = (
                     {i: row[i] for i in category_wise_df_with_requested_fields.columns}
                 )
                 news_list.append(response_dict)
