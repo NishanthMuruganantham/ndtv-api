@@ -7,7 +7,7 @@ import re
 import threading
 import numpy as np
 
-#main_news_csv = r"main_news.csv"
+main_news_csv = r"main_news.csv"
 
 
 class CategoryNews():
@@ -19,11 +19,11 @@ class CategoryNews():
         )
         self.available_categories = {
             "latest": "https://www.ndtv.com/latest",
-            "india": "https://www.ndtv.com/india",
-            "science": "https://www.ndtv.com/science",
-            "business": "https://www.ndtv.com/business/latest",
-            "entertainment": "https://www.ndtv.com/entertainment/latest",
-            "offbeat" : "https://www.ndtv.com/offbeat",
+            # "india": "https://www.ndtv.com/india",
+            # "science": "https://www.ndtv.com/science",
+            # "business": "https://www.ndtv.com/business/latest",
+            # "entertainment": "https://www.ndtv.com/entertainment/latest",
+            # "offbeat" : "https://www.ndtv.com/offbeat",
         }
     
     
@@ -97,12 +97,12 @@ class CategoryNews():
             L.append(df)
         
         self.main_news_dataframe = pd.concat(L, ignore_index = True)
-        #self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
+        self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
     
     
     def read_news_dataframe(self, requested_fields, requested_categories):
-        total_main_news_df = self.main_news_dataframe.copy()
-        #total_main_news_df = pd.read_csv(main_news_csv)
+        #total_main_news_df = self.main_news_dataframe.copy()
+        total_main_news_df = pd.read_csv(main_news_csv)
         # main_news_df_with_requested_fields = total_main_news_df[requested_fields]
         output_category_list = []
         for category in requested_categories:
@@ -129,6 +129,49 @@ class CategoryNews():
             output_category_list.append(category_dictionary)
         
         return {"news": output_category_list}
+
+
+def fetch_sports_news():
+
+    page = requests.get("sports.ndtv.com/cricket/news")
+    tree = html.fromstring(page.content)
+    news_header_xpath = "//li[contains(@class,'lst-pg-a-li')]/div/div/a"
+    headline_elements = tree.xpath(news_header_xpath)
+
+    headline_list = []
+    description_list = []
+    image_url_list = []
+    url_list = []
+
+    for i in range(1, int(len(headline_elements)) + 1):
+        try:
+            news_headline = tree.xpath(f"({news_header_xpath})[{i}]/text()")[0]  # *headline
+            print(news_headline)
+        except IndexError:
+            news_headline = None
+        
+        try:
+            news_url = headline_elements[i - 1].get("href")  # *url
+        except:
+            news_url = None
+        
+        description_xpath = f"({news_header_xpath})[{i}]/following-sibling::p/text()"
+        try:
+            description = tree.xpath(description_xpath)[0]  # *description
+        except IndexError:
+            description = None
+        
+        img_xpath = f"({news_header_xpath})[{i}]/parent::div/preceding-sibling::a/div/img"
+        try:
+            img_url = tree.xpath(img_xpath)[0].get("src")  # *image_url
+        except IndexError:
+            img_url = None
+        
+        headline_list.append(news_headline)
+        description_list.append(description)
+        image_url_list.append(img_url)
+        url_list.append(news_url)
+    
 
 
 category_news = CategoryNews()
