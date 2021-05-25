@@ -2,6 +2,8 @@ from flask import Flask
 from flask_restful import Api
 from NDTV import LatestNews
 
+
+
 cities = ["agra","ahmedabad","allahabad","amritsar","aurangabad","bangalore","bhopal","bhubaneshwar","chandigarh","chennai","delhi","ghaziabad","goa","gurgaon","guwahati"]
 
 app = Flask(__name__)

@@ -6,9 +6,14 @@ from flask import request
 import re
 import threading
 import numpy as np
+from sqlalchemy import create_engine
 
 main_news_csv = r"main_news.csv"
 
+engine = create_engine("postgresql://qmfoxldpeqyqxl:ef4a37793d151cb57a73570ec98f4f20c078de8df5fec98a2770401b20b7d578@ec2-34-202-54-225.compute-1.amazonaws.com:5432/d29c1ebursraf8", echo = False)
+
+
+variable = None
 
 class CategoryNews():
     
@@ -18,13 +23,14 @@ class CategoryNews():
             columns=["category", "headline", "description", "url", "image_url"]
         )
         self.available_categories = {
-            "latest": "https://www.ndtv.com/latest",
-            # "india": "https://www.ndtv.com/india",
-            # "science": "https://www.ndtv.com/science",
-            # "business": "https://www.ndtv.com/business/latest",
+            # "latest": "https://www.ndtv.com/latest",
+            "india": "https://www.ndtv.com/india",
+            "science": "https://www.ndtv.com/science",
+            "business": "https://www.ndtv.com/business/latest",
             # "entertainment": "https://www.ndtv.com/entertainment/latest",
             # "offbeat" : "https://www.ndtv.com/offbeat",
         }
+        self.readable_dataframe = pd.read_sql_table("sample", engine)
     
     
     def scrap_page_and_fetch_news_data(self, category, news_page_url):
@@ -88,22 +94,33 @@ class CategoryNews():
     
     
     def store_news_in_dataframe(self):
-        threading.Timer(600.0, self.store_news_in_dataframe).start()
-        L = []
-        for category in self.available_categories:
-            df = self.scrap_page_and_fetch_news_data(
-                category = category, news_page_url = self.available_categories[category]
-            )
-            L.append(df)
-        
-        self.main_news_dataframe = pd.concat(L, ignore_index = True)
-        self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
-    
+        threading.Timer(300.0, self.store_news_in_dataframe).start()
+        global variable
+        if variable is None:
+            
+            variable = 1
+            print("changed")
+            pass
+        else:    
+            print("second run")
+            L = []
+            for category in self.available_categories:
+                df = self.scrap_page_and_fetch_news_data(
+                    category = category, news_page_url = self.available_categories[category]
+                )
+                L.append(df)
+            
+            self.main_news_dataframe = pd.concat(L, ignore_index = True)
+            self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
+            self.main_news_dataframe.to_sql('sample', con = engine, if_exists='replace')
+            self.readable_dataframe = pd.read_sql_table("sample", engine)
+            print("reassigned")
     
     def read_news_dataframe(self, requested_fields, requested_categories):
         #total_main_news_df = self.main_news_dataframe.copy()
-        total_main_news_df = pd.read_csv(main_news_csv)
-        # main_news_df_with_requested_fields = total_main_news_df[requested_fields]
+        #total_main_news_df = pd.read_csv(main_news_csv)
+        total_main_news_df = self.readable_dataframe.copy()
+        
         output_category_list = []
         for category in requested_categories:
             category_wise_df = total_main_news_df[total_main_news_df["category"] == category]
