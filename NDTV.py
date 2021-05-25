@@ -7,6 +7,7 @@ import re
 import threading
 import numpy as np
 from sqlalchemy import create_engine
+import time
 
 
 engine = create_engine("postgresql://qmfoxldpeqyqxl:ef4a37793d151cb57a73570ec98f4f20c078de8df5fec98a2770401b20b7d578@ec2-34-202-54-225.compute-1.amazonaws.com:5432/d29c1ebursraf8", echo = False)
@@ -93,7 +94,7 @@ class CategoryNews():
     
     
     def store_news_in_dataframe(self):
-        threading.Timer(300.0, self.store_news_in_dataframe).start()
+        threading.Timer(600.0, self.store_news_in_dataframe).start()
         
         global variable
         if variable is None:
@@ -112,6 +113,7 @@ class CategoryNews():
             self.main_news_dataframe = pd.concat(L, ignore_index = True)
             #self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
             self.main_news_dataframe.to_sql('sample', con = engine, if_exists='replace')
+            time.sleep(4)
             self.readable_dataframe = pd.read_sql_table("sample", engine)
         
     
