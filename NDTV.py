@@ -23,12 +23,12 @@ class CategoryNews():
             columns=["category", "headline", "description", "url", "image_url"]
         )
         self.available_categories = {
-            # "latest": "https://www.ndtv.com/latest",
+            "latest": "https://www.ndtv.com/latest",
             "india": "https://www.ndtv.com/india",
             "science": "https://www.ndtv.com/science",
             "business": "https://www.ndtv.com/business/latest",
-            # "entertainment": "https://www.ndtv.com/entertainment/latest",
-            # "offbeat" : "https://www.ndtv.com/offbeat",
+            "entertainment": "https://www.ndtv.com/entertainment/latest",
+            "offbeat" : "https://www.ndtv.com/offbeat",
         }
         self.readable_dataframe = pd.read_sql_table("sample", engine)
     
@@ -95,14 +95,14 @@ class CategoryNews():
     
     def store_news_in_dataframe(self):
         threading.Timer(300.0, self.store_news_in_dataframe).start()
+        
         global variable
         if variable is None:
-            
             variable = 1
-            print("changed")
             pass
+        
         else:    
-            print("second run")
+            
             L = []
             for category in self.available_categories:
                 df = self.scrap_page_and_fetch_news_data(
@@ -111,10 +111,10 @@ class CategoryNews():
                 L.append(df)
             
             self.main_news_dataframe = pd.concat(L, ignore_index = True)
-            self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
+            #self.main_news_dataframe.to_csv(main_news_csv, sep=",", index = False)
             self.main_news_dataframe.to_sql('sample', con = engine, if_exists='replace')
             self.readable_dataframe = pd.read_sql_table("sample", engine)
-            print("reassigned")
+        
     
     def read_news_dataframe(self, requested_fields, requested_categories):
         #total_main_news_df = self.main_news_dataframe.copy()
@@ -188,7 +188,7 @@ def fetch_sports_news():
         description_list.append(description)
         image_url_list.append(img_url)
         url_list.append(news_url)
-    
+
 
 
 category_news = CategoryNews()
