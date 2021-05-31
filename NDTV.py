@@ -5,9 +5,10 @@ import re
 import threading
 import numpy as np
 from sqlalchemy import create_engine
+import os
 
 
-engine = create_engine("postgresql://qmfoxldpeqyqxl:ef4a37793d151cb57a73570ec98f4f20c078de8df5fec98a2770401b20b7d578@ec2-34-202-54-225.compute-1.amazonaws.com:5432/d29c1ebursraf8", echo = False)
+engine = create_engine(os.environ.get("DATABASE_URL"), echo = False)
 
 
 def fetch_news_data_from_db():
@@ -55,7 +56,6 @@ class LatestNews(Resource):
     
     def __init__(self):
         self.readable_dataframe = category_news_dataframe.copy()
-        #self.readable_dataframe = pd.read_sql_table("category_news", engine)
         self.default_page = "latest"
         self.category_field_name = "category"
     
@@ -102,7 +102,6 @@ class LatestNews(Resource):
 class SportsNews(LatestNews):
     def __init__(self):
         self.readable_dataframe = sports_news_dataframe.copy()
-        #self.readable_dataframe = pd.read_sql_table("sports_news", engine)
         self.default_page = "cricket"
         self.category_field_name = "sport"
 
@@ -110,6 +109,5 @@ class SportsNews(LatestNews):
 class CityNews(LatestNews):
     def __init__(self):
         self.readable_dataframe = city_news_dataframe.copy()
-        #self.readable_dataframe = pd.read_sql_table("city_news", engine)
         self.default_page = "cities"
         self.category_field_name = "city"
