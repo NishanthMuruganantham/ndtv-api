@@ -5,3 +5,4 @@ regex
 numpy
 SQLAlchemy
 SQLAlchemy-Utils
+psycopg2
