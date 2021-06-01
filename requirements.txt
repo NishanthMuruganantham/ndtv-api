@@ -30,7 +30,7 @@ lazy==1.3
 lxml==4.6.3
 Mako==1.1.4
 MarkupSafe==1.1.1
-numpy==1.20.3
+numpy==1.19.0
 oauth2==1.9.0.post1
 oauthlib==2.0.7
 pandas==1.2.4
