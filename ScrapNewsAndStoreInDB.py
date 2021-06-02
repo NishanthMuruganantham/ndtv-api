@@ -5,8 +5,8 @@ import requests
 from dateutil.parser import parse
 import os
 import threading
-
-engine = create_engine(os.environ.get("HEROKU_POSTGRESQL_SILVER_URL"), echo = False) #connecting to database
+db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
+engine = create_engine(db_url, echo = False) #connecting to database
 
 #This is the class to scrap the Categorywise news present in the NDTV site and store it to a database.
 #This class can also be inherited to SportsNews class and CityNews class.

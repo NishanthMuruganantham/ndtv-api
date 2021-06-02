@@ -8,7 +8,8 @@ from sqlalchemy import create_engine
 import os
 from ScrapNewsAndStoreInDB import main
 main()
-engine = create_engine(os.environ.get("HEROKU_POSTGRESQL_SILVER_URL"), echo = False)
+db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
+engine = create_engine(db_url, echo = False)
 
 
 def fetch_news_data_from_db():
