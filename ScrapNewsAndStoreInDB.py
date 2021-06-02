@@ -5,9 +5,9 @@ import requests
 from dateutil.parser import parse
 import os
 import threading
-db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
-engine = create_engine(db_url, echo = False) #connecting to database
 
+db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
+engine = create_engine(db_url, echo = False)
 #This is the class to scrap the Categorywise news present in the NDTV site and store it to a database.
 #This class can also be inherited to SportsNews class and CityNews class.
 class CategoryWiseNews():
@@ -273,3 +273,5 @@ def main():
     city_news.store_news_in_database(table_name = "city_news")     #inherited from CategoryWiseNews
     print("city news updated")
     print("all scrapped and stored")
+
+main()

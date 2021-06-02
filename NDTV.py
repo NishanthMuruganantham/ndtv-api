@@ -7,10 +7,9 @@ import numpy as np
 from sqlalchemy import create_engine
 import os
 from ScrapNewsAndStoreInDB import main
-main()
+
 db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
 engine = create_engine(db_url, echo = False)
-
 
 def fetch_news_data_from_db():
     threading.Timer(600.0, fetch_news_data_from_db).start()
