@@ -6,9 +6,9 @@ import threading
 import numpy as np
 from sqlalchemy import create_engine
 import os
-
-
-engine = create_engine(os.environ.get("DATABASE_URL"), echo = False)
+from ScrapNewsAndStoreInDB import main
+main()
+engine = create_engine(os.environ.get("HEROKU_POSTGRESQL_SILVER_URL"), echo = False)
 
 
 def fetch_news_data_from_db():
