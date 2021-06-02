@@ -16,6 +16,7 @@ def fetch_news_data_from_db():
     category_news_dataframe = pd.read_sql_table("category_news", engine)
     sports_news_dataframe = pd.read_sql_table("sports_news", engine)
     city_news_dataframe = pd.read_sql_table("city_news", engine)
+    print("db updated")
     return category_news_dataframe, sports_news_dataframe, city_news_dataframe
 
 
