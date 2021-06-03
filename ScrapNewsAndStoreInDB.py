@@ -4,7 +4,6 @@ import pandas as pd
 import requests
 from dateutil.parser import parse
 import os
-import threading
 
 db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
 engine = create_engine(db_url, echo = False)
@@ -261,7 +260,7 @@ class CityNews(CategoryWiseNews):
 
 
 def main():
-    threading.Timer(600.0, main).start()
+    #threading.Timer(600.0, main).start()
     print("scrapping started")
     category_news = CategoryWiseNews()
     category_news.store_news_in_database(table_name = "category_news")
