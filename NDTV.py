@@ -6,11 +6,11 @@ import threading
 import numpy as np
 from sqlalchemy import create_engine
 import os
-from ScrapNewsAndStoreInDB import main
+
 
 db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
 engine = create_engine(db_url, echo = False)
-
+print("db connection established")
 def fetch_news_data_from_db():
     threading.Timer(600.0, fetch_news_data_from_db).start()
     category_news_dataframe = pd.read_sql_table("category_news", engine)
