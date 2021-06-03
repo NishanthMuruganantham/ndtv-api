@@ -11,13 +11,21 @@ import os
 db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
 engine = create_engine(db_url, echo = False)
 print("db connection established")
+
+category_news_dataframe = None
+sports_news_dataframe = None
+city_news_dataframe = None
+
 def fetch_news_data_from_db():
     threading.Timer(600.0, fetch_news_data_from_db).start()
+    global category_news_dataframe
     category_news_dataframe = pd.read_sql_table("category_news", engine)
+    global sports_news_dataframe
     sports_news_dataframe = pd.read_sql_table("sports_news", engine)
+    global city_news_dataframe
     city_news_dataframe = pd.read_sql_table("city_news", engine)
-    print("db updated")
-    return category_news_dataframe, sports_news_dataframe, city_news_dataframe
+    print("dataframe updated")
+    # return category_news_dataframe, sports_news_dataframe, city_news_dataframe
 
 
 def read_news_dataframe(requested_fields, requested_categories, readable_dataframe):
@@ -49,7 +57,8 @@ def read_news_dataframe(requested_fields, requested_categories, readable_datafra
     return {"news": output_category_list}
 
 
-category_news_dataframe, sports_news_dataframe, city_news_dataframe = fetch_news_data_from_db()
+#category_news_dataframe, sports_news_dataframe, city_news_dataframe = fetch_news_data_from_db()
+fetch_news_data_from_db()
 
 
 class LatestNews(Resource):
