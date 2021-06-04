@@ -1,10 +1,30 @@
-# ndtv-api
+# NDTV News API
 
-**DESCRIPTION :-**
+This API will scrap the news content present in the NDTV website will provide the data in a JSON format.
 
-    This API will scrap the news content present in the NDTV website will provide the data in a JSON format. Below are the contents that can be fetched using this API.
+URL : https://ndtvnews-api.herokuapp.com
+___________________________________________________
 
-| S.No | Category               | Field Name  |
+**Available Endpoints:-**
+===================================================
+Below are the endpoints available in this API.
+
+
+S.No| Categories | Endpoints
+---------|----------|---------
+ 1  | Main News     | /categories
+ 2  | Sports News   | /sports
+ 3  | City News     | /cities
+
+___________________________________________________
+
+**Field Names:-**
+===================================================
+
+
+
+
+| S.No | Content                | Field Name  |
 | ---- | ---------------------- | ----------- |
 | 1    | News Classification    | category    |
 | 2    | News Headline          | headline    |
