@@ -362,8 +362,8 @@ All dependencies are listed in _requirements.txt_ file.
 <hr>
 
 <h2>Contributing</h2>
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+<p>I am a newbie and this is my First Project in Flask API and also in Github. So, advices, corrections, suggestions and pull requests are happily welcome and let us engage in <a href = "https://github.com/NishanthMuruganantham/ndtv-api/discussions">discussions</a></p>
+<p>For major changes, please open an issue first to discuss what you would like to change.
+Please make sure to update tests as appropriate.</P>
 
 ©<a href="https://github.com/NishanthMuruganantham">Nishanth</a>
