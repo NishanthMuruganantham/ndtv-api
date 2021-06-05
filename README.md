@@ -70,7 +70,7 @@ https://ndtvnews-api.herokuapp.com/general?category=values(latest)&field=values(
 <h4>OUTPUT :-</h4>
 <br>
 
-```
+```JSON
 {
     "news": [
         {
@@ -190,7 +190,7 @@ https://ndtvnews-api.herokuapp.com/cities?city=values(chennai,mumbai,delhi)&fiel
 <h4>OUTPUT :-</h4>
 <br>
 
-```
+```JSON
 {
     "news": [
         {
@@ -287,7 +287,7 @@ https://ndtvnews-api.herokuapp.com/sports?sport=values(cricket,football)&field=v
 <h4>OUTPUT :-</h4>
 <br>
 
-```
+```JSON
 {
     "news": [
         {
@@ -338,3 +338,32 @@ Hence, it will give you a dictionary with a key called news and the value contai
 If you are not specifying any keys and just simply hit the endpoint, it will give you the top cricket news with all the available fields (category, headline, description, url, image_url,  posted_date).
 </p>
 <hr>
+
+<h2>Installation and Setup</h2>
+
+All dependencies are listed in _requirements.txt_ file.
+
+1. To install dependencies, run -
+
+    ```bash
+    $ pip install -r requirements.txt
+    ```
+
+2. Database - 
+
+        It will take considerable amount of time to scrap all the data present in NDTV website in live time for each request. So, HEROKU POSTGRES DB (flask sqlite can also be used) has been used to store the scrapped data. The database will be feed with latest news present in the NDTV website for every 10 minutes which inturn will feed a pandas dataframe. 
+
+        Once a request is received, it will query the dataframe for the requested data and will provide the JSON response.
+
+3. Start the api server - 
+    ```bash
+    $ python app.py
+    ```
+<hr>
+
+<h2>Contributing</h2>
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+©<a href="https://github.com/NishanthMuruganantham">Nishanth</a>
