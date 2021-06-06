@@ -5,8 +5,13 @@ import requests
 from dateutil.parser import parse
 import os
 
+
+#fetching db url from entertainmental variables
 db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
 engine = create_engine(db_url, echo = False)
+print("db connection established")
+
+
 #This is the class to scrap the Categorywise news present in the NDTV site and store it to a database.
 #This class can also be inherited to SportsNews class and CityNews class.
 class CategoryWiseNews():
@@ -14,7 +19,7 @@ class CategoryWiseNews():
     
     def __init__(self):
         self.main_news_dataframe = pd.DataFrame(
-            columns=["category", "headline", "description", "url", "image_url", "posted_date"]
+            columns = ["category", "headline", "description", "url", "image_url", "posted_date"]
         )
         self.available_categories = {
             "latest"    : "https://www.ndtv.com/latest",
@@ -29,7 +34,7 @@ class CategoryWiseNews():
     #this function will scrap the news using LXML's HTML by xpath
     def scrap_page_and_fetch_news_data(self, category, news_page_url):
         news_df = pd.DataFrame(
-            columns=["category", "headline", "description", "url", "image_url", "posted_date"]
+            columns = ["category", "headline", "description", "url", "image_url", "posted_date"]
         )
         
         #finding the last entry in the pagination to find the total pages present for the particoular category
@@ -212,7 +217,7 @@ class CityNews(CategoryWiseNews):
     
     def __init__(self):
         self.main_news_dataframe = pd.DataFrame(
-            columns=["category", "headline", "description", "url", "image_url", "posted_date"]
+            columns = ["category", "headline", "description", "url", "image_url", "posted_date"]
         )
         
         cities = [
@@ -260,7 +265,6 @@ class CityNews(CategoryWiseNews):
 
 
 def main():
-    #threading.Timer(600.0, main).start()
     print("scrapping started")
     category_news = CategoryWiseNews()
     category_news.store_news_in_database(table_name = "category_news")
