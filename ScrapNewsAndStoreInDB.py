@@ -14,7 +14,7 @@ print("db connection established")
 
 #This is the class to scrap the Categorywise news present in the NDTV site and store it to a database.
 #This class can also be inherited to SportsNews class and CityNews class.
-class CategoryWiseNews():
+class GeneralNews():
     
     
     def __init__(self):
@@ -125,7 +125,7 @@ class CategoryWiseNews():
 
 
 #This is the class to scrap the Sports news present in https://sports.ndtv.com
-class SportsNews(CategoryWiseNews):
+class SportsNews(GeneralNews):
     
     def __init__(self):
         self.main_news_dataframe = pd.DataFrame(
@@ -212,7 +212,7 @@ class SportsNews(CategoryWiseNews):
 
 
 #This is the class to scrap the City wise news
-class CityNews(CategoryWiseNews):
+class CityNews(GeneralNews):
     
     
     def __init__(self):
@@ -264,17 +264,20 @@ class CityNews(CategoryWiseNews):
         self.available_categories.update({city : f"https://www.ndtv.com/{city}-news" for city in cities})
 
 
-def main():
+if __name__ == '__main__':
+    
     print("scrapping started")
-    category_news = CategoryWiseNews()
-    category_news.store_news_in_database(table_name = "category_news")
-    print("category news updated")
+    
+    general_news = GeneralNews()
+    general_news.store_news_in_database(table_name = "general_news")
+    print("scrapped general news and successfully stored in DB")
+    
     sports_news = SportsNews()
-    sports_news.store_news_in_database(table_name = "sports_news")   #inherited from CategoryWiseNews
-    print("sports news updated")
+    sports_news.store_news_in_database(table_name = "sports_news")   #inherited from GeneralNews
+    print("scrapped sports news and successfully stored in DB")
+    
     city_news = CityNews()
-    city_news.store_news_in_database(table_name = "city_news")     #inherited from CategoryWiseNews
-    print("city news updated")
-    print("all scrapped and stored")
-
-main()
+    city_news.store_news_in_database(table_name = "city_news")     #inherited from GeneralNews
+    print("scrapped city news and successfully stored in DB")
+    
+    print("scrapping complted")
