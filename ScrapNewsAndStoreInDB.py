@@ -280,4 +280,4 @@ if __name__ == '__main__':
     city_news.store_news_in_database(table_name = "city_news")     #inherited from GeneralNews
     print("scrapped city news and successfully stored in DB")
     
-    print("scrapping complted")
+    print("scrapping completed")
