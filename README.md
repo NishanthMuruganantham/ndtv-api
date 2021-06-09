@@ -232,7 +232,7 @@ https://ndtvnews-api.herokuapp.com/cities?city=values(chennai,mumbai,delhi)&fiel
                 {
                     "headline": "2nd Covid Wave Peaked At 28,000 Cases A Day, 3rd Wave May Reach 37,000: Arvind Kejriwal",
                     "image_url": "https://c.ndtvimg.com/2021-05/plmda16_coronavirus-india-generic-pti_120x90_07_May_21.jpg",
-                    "posted_date": "2021-06-05"
+                    "posted_date": "2021-06-05" 
                 }
             ]
         }
