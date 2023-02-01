@@ -11,7 +11,9 @@ db_url = os.environ.get('MONGO_DB_URL')
 client = MongoClient(db_url)
 db_name = client[os.environ.get('DB_NAME')]
 print("db connection established")
-
+# db_url = "mongodb+srv://ndtvuser:ndtvpassword@ndtv-api-db-cluster-dev.cwpix4y.mongodb.net/?retryWrites=true&w=majority"
+# client = MongoClient(db_url)
+# db_name = client["ndtv-dev-db"]
 
 #This is the class to scrap the Categorywise news present in the NDTV site and store it to a database.
 #This class can also be inherited to SportsNews class and CityNews class.
@@ -38,14 +40,15 @@ class GeneralNews():
             columns = ["category", "headline", "description", "url", "image_url", "posted_date"]
         )
         
+        print(f"Scrapping the data for {category}")
         #finding the last entry in the pagination to find the total pages present for the particoular category
         last_page_xpath = "//div[contains(@class,'listng_pagntn clear')]/a[contains(@class,'btnLnk arrowBtn next')]/preceding-sibling::a[position()=1]"
         page = requests.get(news_page_url)
         tree = html.fromstring(page.content)
         try:
             total_pages = tree.xpath(last_page_xpath + "/text()")[0]
-            if total_pages > 20:
-                total_pages = 20
+            if int(total_pages) > 10:
+                total_pages = 10
         except:
             total_pages = 1
         
@@ -111,10 +114,13 @@ class GeneralNews():
         news_df["posted_date"] = posted_date_list
         news_df = news_df.assign(category = category)
         
+        print(f"Data collected for {category}")
+        
         return news_df
     
     #this function will store the scrapped news data in a Database which will later feed those news to the featured API
     def store_news_in_database(self, table_name):
+        print(f"Started scrapping {table_name}")
         L = []
         for category in self.available_categories:
             df = self.scrap_page_and_fetch_news_data(
@@ -272,27 +278,32 @@ class CityNews(GeneralNews):
         self.available_categories.update({city : f"https://www.ndtv.com/{city}-news" for city in cities})
 
 
-def main():
+def main(news_type):
     
     print("scrapping started")
     
-    general_news = GeneralNews()
-    general_news.store_news_in_database(table_name = "general_news")
-    print("scrapped general news and successfully stored in DB")
+    if news_type == "general_news":
+        general_news = GeneralNews()
+        general_news.store_news_in_database(table_name = "general_news")
+        print("scrapped general news and successfully stored in DB")
     
-    sports_news = SportsNews()
-    sports_news.store_news_in_database(table_name = "sports_news")   #inherited from GeneralNews
-    print("scrapped sports news and successfully stored in DB")
+    elif news_type == "sports_news":
+        sports_news = SportsNews()
+        sports_news.store_news_in_database(table_name = "sports_news")   #inherited from GeneralNews
+        print("scrapped sports news and successfully stored in DB")
     
-    city_news = CityNews()
-    city_news.store_news_in_database(table_name = "city_news")     #inherited from GeneralNews
-    print("scrapped city news and successfully stored in DB")
+    else:
+        city_news = CityNews()
+        city_news.store_news_in_database(table_name = "city_news")     #inherited from GeneralNews
+        print("scrapped city news and successfully stored in DB")
     
     print("scrapping completed")
 
 
 def lambda_handler(event, context):
     
-    main()
+    news_type = event["news_type"]
+    
+    main(news_type)
     
     return "News data scrapped and stored in DB successfully"
