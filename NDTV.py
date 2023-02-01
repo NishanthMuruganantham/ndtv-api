@@ -20,7 +20,7 @@ city_news_dataframe = None
 
 with open(r"README.md", "r") as f:
     readme_content = f.read()
-    print("readme file content has been fetched")
+    print("readme file content's has been fetched")
 
 
 def fetch_news_data_from_db():
