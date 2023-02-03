@@ -11,9 +11,6 @@ db_url = os.environ.get('MONGO_DB_URL')
 client = MongoClient(db_url)
 db_name = client[os.environ.get('DB_NAME')]
 print("db connection established")
-# db_url = "mongodb+srv://ndtvuser:ndtvpassword@ndtv-api-db-cluster-dev.cwpix4y.mongodb.net/?retryWrites=true&w=majority"
-# client = MongoClient(db_url)
-# db_name = client["ndtv-dev-db"]
 
 #This is the class to scrap the Categorywise news present in the NDTV site and store it to a database.
 #This class can also be inherited to SportsNews class and CityNews class.
