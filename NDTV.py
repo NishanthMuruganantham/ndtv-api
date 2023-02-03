@@ -4,13 +4,14 @@ from flask import request
 import re
 import threading
 import numpy as np
-from sqlalchemy import create_engine
 import os
+from pymongo import MongoClient
 
 
 #fetching db url from entertainmental variables
-db_url = os.environ.get("HEROKU_POSTGRESQL_SILVER_URL").replace("postgres","postgresql")
-engine = create_engine(db_url, echo = False)
+db_url = os.environ.get('MONGO_DB_URL')
+client = MongoClient(db_url)
+db_name = client[os.environ.get('DB_NAME')]
 print("db connection established")
 
 general_news_dataframe = None
@@ -31,15 +32,15 @@ def fetch_news_data_from_db():
     
     threading.Timer(600.0, fetch_news_data_from_db).start()             #threaded to run every 10 minutes to keep the news dataframe updated
     global general_news_dataframe
-    general_news_dataframe = pd.read_sql_table("general_news", engine)
+    general_news_dataframe = pd.DataFrame(list(db_name["general_news"].find()))
     print("general news dataframe has been updated")
     
     global sports_news_dataframe
-    sports_news_dataframe = pd.read_sql_table("sports_news", engine)
+    sports_news_dataframe = pd.DataFrame(list(db_name["sports_news"].find()))
     print("sports news dataframe has been updated")
     
     global city_news_dataframe
-    city_news_dataframe = pd.read_sql_table("city_news", engine)
+    city_news_dataframe = pd.DataFrame(list(db_name["city_news"].find()))
     print("city news dataframe has been updated")
 
 
@@ -60,6 +61,8 @@ def read_news_dataframe(requested_fields, requested_categories, readable_datafra
     """
     
     total_main_news_df = readable_dataframe
+    total_main_news_df["posted_date"] = pd.to_datetime(total_main_news_df["posted_date"], format = "%Y-%m-%d")
+    total_main_news_df["posted_date"] = total_main_news_df["posted_date"].dt.strftime("%d-%m-%Y")
     total_main_news_df["posted_date"] = total_main_news_df["posted_date"].astype(str)   #converting data column to string
     output_category_list = []
     

@@ -44,6 +44,9 @@ Generated\ Files/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# Virtual Environments
+venv/
+
 # NUnit
 *.VisualState.xml
 TestResult.xml
