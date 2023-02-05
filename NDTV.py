@@ -61,7 +61,7 @@ def read_news_dataframe(requested_fields, requested_categories, readable_datafra
     """
     
     total_main_news_df = readable_dataframe
-    total_main_news_df["posted_date"] = pd.to_datetime(total_main_news_df["posted_date"], format = "%Y-%m-%d")
+    total_main_news_df["posted_date"] = pd.to_datetime(total_main_news_df["posted_date"], errors="coerce", format = "%Y-%m-%d")
     total_main_news_df["posted_date"] = total_main_news_df["posted_date"].dt.strftime("%d-%m-%Y")
     total_main_news_df["posted_date"] = total_main_news_df["posted_date"].astype(str)   #converting data column to string
     output_category_list = []
