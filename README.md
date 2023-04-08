@@ -2,7 +2,7 @@
 
 <p>This API will scrap the news content present in the NDTV website will provide the data in a JSON format.</p>
 
-URL : https://ndtvnews-api.herokuapp.com
+URL : https://ndtvnews-api.vercel.com
 
 <hr>
 
@@ -35,7 +35,7 @@ Below are the endpoints available in this API.
 
 <p>Please find the instructions for using the respective endpoints.</p>
 
-<h3>For https://ndtvnews-api.herokuapp.com/general :-</h3>
+<h3>For https://ndtvnews-api.vercel.com/general :-</h3>
 
 <p>This endpoint will give you the news for the below mentioned categories.</p>
 
@@ -56,15 +56,15 @@ Below are the endpoints available in this API.
 
 Key | Name |Example
 ---------|----------|---------
- category | news category you wish to get | https://ndtvnews-api.herokuapp.com/general?category=values(latest,india,world)
- field | field content | https://ndtvnews-api.herokuapp.com/general?field=values(headline,description,url)
+ category | news category you wish to get | https://ndtvnews-api.vercel.com/general?category=values(latest,india,world)
+ field | field content | https://ndtvnews-api.vercel.com/general?field=values(headline,description,url)
 <br>
 
 <h4>GET REQUEST :-</h4>
 <br>
 
 ```
-https://ndtvnews-api.herokuapp.com/general?category=values(latest)&field=values(headline,description,url)
+https://ndtvnews-api.vercel.com/general?category=values(latest)&field=values(headline,description,url)
 ```
 
 <h4>OUTPUT :-</h4>
