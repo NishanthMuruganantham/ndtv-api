@@ -2,7 +2,7 @@
 
 <p>This API will scrap the news content present in the NDTV website will provide the data in a JSON format.</p>
 
-URL : https://ndtvnews-api.herokuapp.com
+URL : https://ndtvapi.vercel.app
 
 <hr>
 
@@ -35,7 +35,7 @@ Below are the endpoints available in this API.
 
 <p>Please find the instructions for using the respective endpoints.</p>
 
-<h3>For https://ndtvnews-api.herokuapp.com/general :-</h3>
+<h3>For https://ndtvapi.vercel.app/general :-</h3>
 
 <p>This endpoint will give you the news for the below mentioned categories.</p>
 
@@ -56,15 +56,15 @@ Below are the endpoints available in this API.
 
 Key | Name |Example
 ---------|----------|---------
- category | news category you wish to get | https://ndtvnews-api.herokuapp.com/general?category=values(latest,india,world)
- field | field content | https://ndtvnews-api.herokuapp.com/general?field=values(headline,description,url)
+ category | news category you wish to get | https://ndtvapi.vercel.app/general?category=values(latest,india,world)
+ field | field content | https://ndtvapi.vercel.app/general?field=values(headline,description,url)
 <br>
 
 <h4>GET REQUEST :-</h4>
 <br>
 
 ```
-https://ndtvnews-api.herokuapp.com/general?category=values(latest)&field=values(headline,description,url)
+https://ndtvapi.vercel.app/general?category=values(latest)&field=values(headline,description,url)
 ```
 
 <h4>OUTPUT :-</h4>
@@ -128,7 +128,7 @@ Hence, it will give you a dictionary with a key called news and the value contai
 If you are not specifying any keys and just simply hit the endpoint, it will give you the news from latest category with all the available fields (category, headline, description, url, image_url,  posted_date).
 </p>
 <hr>
-<h3>For https://ndtvnews-api.herokuapp.com/cities :-</h3>
+<h3>For https://ndtvapi.vercel.app/cities :-</h3>
 
 <p>This will give you the news related to the below mentioned cities.</p>
 
@@ -176,15 +176,15 @@ If you are not specifying any keys and just simply hit the endpoint, it will giv
 
 Key | Name |Example
 ---------|----------|---------
- city | name of the city you wish to get the news | https://ndtvnews-api.herokuapp.com/cities?city=values(chennai,mumbai,delhi)
- field | field content | https://ndtvnews-api.herokuapp.com/cities?field=values(headline,image_url,posted_date)
+ city | name of the city you wish to get the news | https://ndtvapi.vercel.app/cities?city=values(chennai,mumbai,delhi)
+ field | field content | https://ndtvapi.vercel.app/cities?field=values(headline,image_url,posted_date)
 <br>
 
 <h4>GET REQUEST :-</h4>
 <br>
 
 ```
-https://ndtvnews-api.herokuapp.com/cities?city=values(chennai,mumbai,delhi)&field=values(headline,image_url,posted_date)
+https://ndtvapi.vercel.app/cities?city=values(chennai,mumbai,delhi)&field=values(headline,image_url,posted_date)
 ```
 
 <h4>OUTPUT :-</h4>
@@ -247,7 +247,7 @@ Hence, it will give you a dictionary with a key called news and the value contai
 If you are not specifying any keys and just simply hit the endpoint, it will give you the top news from all the cities across India with all the available fields (category, headline, description, url, image_url,  posted_date).
 </p>
 <hr>
-<h3>For https://ndtvnews-api.herokuapp.com/sports :-</h3>
+<h3>For https://ndtvapi.vercel.app/sports :-</h3>
 
 <p>This will give you the news related to the below mentioned sports.</p>
 
@@ -273,15 +273,15 @@ If you are not specifying any keys and just simply hit the endpoint, it will giv
 
 Key | Name |Example
 ---------|----------|---------
- sport | name of the sport you wish to get the news| https://ndtvnews-api.herokuapp.com/sports?sport=values(cricket,football)
- field | field content | https://ndtvnews-api.herokuapp.com/sports?field=values(headline,description,url)
+ sport | name of the sport you wish to get the news| https://ndtvapi.vercel.app/sports?sport=values(cricket,football)
+ field | field content | https://ndtvapi.vercel.app/sports?field=values(headline,description,url)
 <br>
 
 <h4>GET REQUEST :-</h4>
 <br>
 
 ```
-https://ndtvnews-api.herokuapp.com/sports?sport=values(cricket,football)&field=values(headline,description,url)
+https://ndtvapi.vercel.app/sports?sport=values(cricket,football)&field=values(headline,description,url)
 ```
 
 <h4>OUTPUT :-</h4>
